@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupportPulse | Customer Support Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Nav Bar Code-->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <!-- <span class="nav-logo-icon">Logo</span> -->
+            <img src="/assets/ico_files/Untitled design - Copy.ico" alt="SupportPulse Logo" class="nav-logo-icon">
+            <span class="">SupportPulse</span>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">JD</div>
+            <span>John Doe</span>
+        </div>
+    </nav>
+
+    <!--Main Content-->
+    <div class="main-container">
+        <!--SideMenu-->
+        <aside class="sidebar">
+            <!--Side Menu Options-->
+            <div class="menu-item active" data-page="dashboard">
+                <span class="menu-icon">📊</span>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item" data-page="myTickets">
+                <span class="menu-icon">📋</span>
+                <span>My Tickets</span>
+            </div>
+            <div class="menu-item" data-page="searchTickets">
+                <span class="menu-icon">🔍</span>
+                <span>Search Tickets</span>
+            </div>
+            <div class="menu-item" data-page="createTickets">
+                <span class="menu-icon">➕</span>
+                <span>Create Tickets</span>
+            </div>
+        </aside>
+    </div>
+
+    <!--Menu Page Content-->
+    <main class="content">
+        <section class="page active" id="dashboard"></section>
+        <section class="page" id="myTickets"></section>
+        <section class="page" id="searchTickets"></section>
+        <section class="page" id="createTickets"></section>
+    </main>
+
+
+    <script src="/Frontend/main.js"></script>
+</body>
+</html>
