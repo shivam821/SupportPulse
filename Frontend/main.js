@@ -1,75 +1,98 @@
 
-
 /**
- * Supabase client initialization for interacting with the backend database.
- * @constant {string} SUPABASE_URL - The Supabase project URL.
- * @constant {string} SUPABASE_ANON_KEY - The Supabase anonymous API key.
- * @constant {object} supabase - The Supabase client instance.
+ * Supabase URL for database connection.
+ * @constant {string}
  */
 
 /**
- * Handles menu item click events to switch active page and menu item.
- * Removes 'active' class from all menu items and pages, then adds it to the clicked item and corresponding page.
+ * Supabase anonymous key for authentication.
+ * @constant {string}
  */
 
 /**
- * Handles ticket submission form.
- * Inserts a new ticket into the 'tickets' table in Supabase.
- * Clears form fields after successful submission.
- * @event click
+ * Supabase client instance.
+ * @type {object}
+ */
+
+/**
+ * Handles menu item click events to switch active page.
+ */
+
+/**
+ * Form input elements for ticket creation.
+ * @type {HTMLInputElement}
+ */
+
+/**
+ * Ticket submission button element.
+ * @type {HTMLButtonElement}
+ */
+
+/**
+ * Handles ticket submission event, inserts a new ticket into Supabase, and clears form fields.
  * @param {Event} event - The click event object.
+ * @returns {Promise<void>}
  */
 
 /**
- * Fetches all tickets from Supabase and populates the "My Tickets" section.
+ * Fetches all tickets from Supabase and populates "My Tickets" section.
  * @async
  * @function fetchMytickets
+ * @returns {Promise<void>}
  */
 
 /**
  * Populates the "My Tickets" section with ticket data.
- * @function populateMytickets
  * @param {Array<Object>} tickets - Array of ticket objects.
  */
 
 /**
  * Capitalizes the first letter of a string.
- * @function capitalizeFirstLetter
  * @param {string} str - The string to capitalize.
- * @returns {string} - The capitalized string.
+ * @returns {string} The capitalized string.
  */
 
 /**
- * Fetches all tickets from Supabase and populates the "Search Tickets" section.
+ * Stores all tickets globally for search filtering.
+ * @type {Array<Object>}
+ */
+
+/**
+ * Fetches all tickets from Supabase and populates the search tickets section.
  * @async
  * @function fetchSearchtickets
+ * @returns {Promise<void>}
  */
 
 /**
- * Populates the "Search Tickets" section with ticket data.
- * @function populateSearchtickets
+ * Populates the search tickets section with ticket data.
  * @param {Array<Object>} tickets - Array of ticket objects.
+ */
+
+/**
+ * Handles search input event to filter tickets by subject, description, or status.
+ * @param {Event} e - The input event object.
  */
 
 /**
  * Gets the total count of tickets from Supabase.
  * @async
  * @function getTotalticketcount
- * @returns {Promise<number|null>} - The total ticket count or null if error.
+ * @returns {Promise<number|null>} The total ticket count or null if error.
  */
 
 /**
  * Gets the total count of open tickets from Supabase.
  * @async
  * @function getTotalopenticketcount
- * @returns {Promise<number|null>} - The count of open tickets or null if error.
+ * @returns {Promise<number|null>} The count of open tickets or null if error.
  */
 
 /**
  * Gets the total count of closed tickets from Supabase.
  * @async
  * @function getTotalcloseticketcount
- * @returns {Promise<number|null>} - The count of closed tickets or null if error.
+ * @returns {Promise<number|null>} The count of closed tickets or null if error.
  */
 // Ensure Supabase library is loaded before this script
 const SUPABASE_URL = 'https://gumnirlcexdbfjhznivz.supabase.co';
@@ -178,22 +201,32 @@ fetchMytickets();
 
 
 
-//Search Tickets
+
+
+let allTickets = []; // store tickets globally
+
+// Fetch Tickets
 async function fetchSearchtickets() {
     const { data, error } = await supabase.from("tickets").select("*");
     if (error) {
-        console.log('Error in fetching jobs.');
-        return; // Added return to prevent using undefined 'data' when error occurs
+        console.log('Error in fetching tickets.');
+        return;
     }
-    populateSearchtickets(data);
+    allTickets = data; // save all tickets
+    populateSearchtickets(allTickets);
 }
 
+// Populate Tickets
 function populateSearchtickets(tickets) {
     const searchTicketbody = document.getElementById('searchTicketbody');
     searchTicketbody.innerHTML = '';
 
+    if (tickets.length === 0) {
+        searchTicketbody.innerHTML = '<p>No tickets found.</p>';
+        return;
+    }
+
     tickets.forEach((ticket) => {
-        // Create the HTML element for each ticket
         const ticketElement = document.createElement('div');
         ticketElement.className = 'search-ticket-item';
         ticketElement.innerHTML = `
@@ -207,19 +240,31 @@ function populateSearchtickets(tickets) {
                 ${ticket.ticket_status ? capitalizeFirstLetter(ticket.ticket_status) : 'Open'}
             </div>
         `;
-        
-        // Append the ticket to the container
         searchTicketbody.appendChild(ticketElement);
     });
 }
 
+// Capitalize helper
 function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+// Search Filter
+document.querySelector('.search-ticket-input').addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+
+    const filteredTickets = allTickets.filter(ticket => {
+        return (
+            (ticket.subject && ticket.subject.toLowerCase().includes(searchTerm)) ||
+            (ticket.ticket_description && ticket.ticket_description.toLowerCase().includes(searchTerm)) ||
+            (ticket.ticket_status && ticket.ticket_status.toLowerCase().includes(searchTerm))
+        );
+    });
+
+    populateSearchtickets(filteredTickets);
+});
+
 fetchSearchtickets();
-
-
 
 //Total Tickets
 getTotalticketcount().then(count => {

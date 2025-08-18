@@ -143,10 +143,10 @@ body {
 
 /* Tickets Page */
 .ticket-list {
-    background: white;
+    background: #f9fafb;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
 }
 
 .ticket-header {
