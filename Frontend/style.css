@@ -190,12 +190,17 @@ body {
     font-weight: 500;
 }
 
-.status-open {
+.status-Open {
     background-color: #fef3c7;
-    color: #d97706;
+    color: #bdbb4a;
 }
 
-.status-closed {
+.status-Ongoing {
+    background-color: #fef3c7;
+    color: #d97706;    
+}
+
+.status-Closed {
     background-color: #dcfce7;
     color: #16a34a;
 }
@@ -247,15 +252,64 @@ body {
     background-color: #1d4ed8;
 }
 
-/* Search Page */
-.search-container {
-    margin-bottom: 1.5rem;
-}
 
-.search-input {
+/*Search*/
+.search-ticket-input {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
     font-size: 1rem;
+}
+
+.search-ticket-container {
+    margin-bottom: 10px;
+}
+
+.search-ticket-list {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-ticket-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.search-ticket-item {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-ticket-item:last-child {
+    border-bottom: none;
+}
+
+.search-ticket-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.search-ticket-title {
+    font-weight: 500;
+}
+
+.search-ticket-meta {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.search-ticket-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
 }

@@ -70,25 +70,23 @@
                     <div class="ticket-header">
                         <h3>Recent Tickets</h3>
                     </div>
-                    <!-- <div class="ticket-item">
-                        <div class="ticket-info">
-                            <div class="ticket-title">Order not delivered</div>
-                            <div class="ticket-meta">Created: 2 hours ago • Customer: jane@example.com</div>
-                        </div>
-                        <div class="ticket-status status-open">Open</div>
-                    </div>
-                    <div class="ticket-item">
-                        <div class="ticket-info">
-                            <div class="ticket-title">Payment issue</div>
-                            <div class="ticket-meta">Created: 1 day ago • Customer: mike@example.com</div>
-                        </div>
-                        <div class="ticket-status status-closed">Closed</div>
-                    </div> -->
+                    <div class="myTicketsbody" id="myTicketsbody"></div>
                 </div>
             </section>
             
             <!-- Search Tickets Page -->
-            <section class="page" id="search-tickets">
+             <section class="page" id="search-tickets">
+                <h1>Search Tickets</h1>
+                <div class="search-ticket-container">
+                    <input type="text" class="search-ticket-input">
+                </div>
+
+                <div class="search-ticket-list">
+
+                </div>
+                <div class="searchTicketbody" id="searchTicketbody"></div>
+             </section>
+            <!-- <section class="page" id="search-tickets">
                 <h1>Search Tickets</h1>
                 <div class="search-container">
                     <input type="text" class="search-input" placeholder="Search by ticket ID, customer email, or subject...">
@@ -98,7 +96,7 @@
                         <h3>Search Results</h3>
                     </div>
                 </div>
-            </section>
+            </section> -->
             
             <!-- Create Ticket Page -->
             <section class="page" id="create-ticket">
@@ -106,19 +104,19 @@
                 <form class="ticket-form">
                     <div class="form-group">
                         <label class="form-label">Subject</label>
-                        <input type="text" class="form-input" required>
+                        <input type="text" class="form-input" id="form-input-subject" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Customer Email</label>
-                        <input type="email" class="form-input" required>
+                        <input type="email" class="form-input" id="form-input-customer-email" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Reporter </label>
-                        <input type="text" class="form-input" required>
+                        <input type="text" class="form-input" id="form-input-reportor" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Priority</label>
-                        <select class="form-input">
+                        <select class="form-input" id="form-input-priority" required>
                             <option selected>Low</option>
                             <option>Medium</option>
                             <option>High</option>
@@ -127,7 +125,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Ticket Type</label>
-                        <select class="form-input">
+                        <select class="form-input" id="form-input-ticket-type" required>
                             <option selected>Bug/Error</option>
                             <option>Feature Request</option>
                             <option>General Question</option>
@@ -137,14 +135,16 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Description</label>
-                        <textarea class="form-input form-textarea" required></textarea>
+                        <textarea class="form-input form-textarea" id="form-input-description" required></textarea>
                     </div>
-                    <button type="submit" class="form-submit">Create Ticket</button>
+                    <button type="submit" class="form-submit" id="form-submit">Create Ticket</button>
                 </form>
             </section>
         </main>
     </div>
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="/Frontend/main.js"></script>
+
 </body>
 </html>
