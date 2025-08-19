@@ -1,0 +1,88 @@
+<!--
+    index.html - SupportPulse Authentication Login Page
+
+    Description:
+    This HTML file provides the login interface for the SupportPulse application. 
+    It allows users to select their role (Customer, Support Agent, Administrator) and log in accordingly.
+
+    Structure:
+    - Header section with logo and title.
+    - User type selector for choosing between Customer, Support Agent, and Administrator.
+    - Login form with fields for Email, Password, and Admin Key.
+    - "Forgot Password?" link for password recovery.
+    - Login button to submit credentials.
+
+    External Resources:
+    - style.css: Stylesheet for page layout and design.
+    - main.js: JavaScript for interactive functionality.
+
+    Accessibility:
+    - Uses semantic HTML elements.
+    - Responsive design via viewport meta tag.
+
+    Usage:
+    - Users select their role and enter credentials to log in.
+    - Admin Key field is present for administrator authentication.
+
+    Author: [Your Name or Organization]
+    Date: [Creation Date]
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupportPulse | Login Page</title>
+    <link rel="stylesheet" href="/Authentication/style.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">
+                <span><img src="/assets/ico_files/Untitled design - Copy.ico" alt="" class="span-image"></span>
+                <span>SupportPulse</span>
+            </div>
+            <p>Login to your account</p>
+        </div>
+        <div class="user-type-selector">
+            <div class="user-type active" data-type="customer">
+                <div class="user-type-icon">👤</div>
+                <div class="user-type-name">Customer</div>
+            </div>
+            <div class="user-type" data-type="agent">
+                <div class="user-type-icon">🛠️</div>
+                <div class="user-type-name">Support Agent</div>
+            </div>
+            <div class="user-type" data-type="admin">
+                <div class="user-type-icon">🔒</div>
+                <div class="user-type-name">Administrator</div>
+            </div>
+        </div>
+        <form class="login-form" id="login-form">
+            <div class="form-group">
+                <label for="" class="form-label">Email</label>
+                <input type="email" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label for="" class="form-label">Password</label>
+                <input type="password" class="form-input" required>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+            <div class="form-group">
+                <label for="" class="form-label">Admin Key</label>
+                <input type="password" class="form-input" required>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
+
+
+
+
+    <script src="/Authentication/main.js"></script>
+    
+</body>
+</html>
