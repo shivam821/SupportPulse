@@ -1,24 +1,3 @@
-/*
-  style.css - Login Page Styles
-
-  - Imports Poppins font from Google Fonts.
-  - Applies global box-sizing, margin, padding, and font-family.
-  - Styles the body for centered layout with a blue background.
-  - .login-container: Card-like container with rounded corners and shadow.
-  - .login-header: Header section with background color and centered text.
-  - .span-image: Circular image/icon styling.
-  - .logo: Logo area with flex layout and spacing.
-  - .user-type-selector: Horizontal selector for user types.
-  - .user-type: Individual user type option with hover and active states.
-  - .user-type-name, .user-type-icon: Styles for user type name and icon.
-  - .login-form: Padding for the form area.
-  - .form-group: Spacing between form fields.
-  - .form-label: Label styling for form inputs.
-  - .form-input: Input field styling with focus effect.
-  - .forgot-password: Link styling for password recovery.
-  - .login-button: Primary button styling with hover effect.
-  - Responsive adjustments for screens <= 400px.
-*/
 
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,900;1,900&display=swap");

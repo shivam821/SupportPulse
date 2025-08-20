@@ -1,34 +1,3 @@
-<!--
-    index.html - SupportPulse Authentication Login Page
-
-    Description:
-    This HTML file provides the login interface for the SupportPulse application. 
-    It allows users to select their role (Customer, Support Agent, Administrator) and log in accordingly.
-
-    Structure:
-    - Header section with logo and title.
-    - User type selector for choosing between Customer, Support Agent, and Administrator.
-    - Login form with fields for Email, Password, and Admin Key.
-    - "Forgot Password?" link for password recovery.
-    - Login button to submit credentials.
-
-    External Resources:
-    - style.css: Stylesheet for page layout and design.
-    - main.js: JavaScript for interactive functionality.
-
-    Accessibility:
-    - Uses semantic HTML elements.
-    - Responsive design via viewport meta tag.
-
-    Usage:
-    - Users select their role and enter credentials to log in.
-    - Admin Key field is present for administrator authentication.
-
-    Author: [Your Name or Organization]
-    Date: [Creation Date]
--->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,7 +40,7 @@
                 <input type="password" class="form-input" required>
                 <a href="#" class="forgot-password">Forgot Password?</a>
             </div>
-            <div class="form-group">
+            <div class="form-group admin-field" id="admin-field">
                 <label for="" class="form-label">Admin Key</label>
                 <input type="password" class="form-input" required>
             </div>
@@ -81,7 +50,7 @@
 
 
 
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="/Authentication/main.js"></script>
     
 </body>
