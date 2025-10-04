@@ -1,0 +1,174 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupportPulse | Admin Dashboard</title>
+    <link rel="stylesheet" href="admin_user_frontend.css">
+</head>
+<body>
+    <!--Nav Bar Code-->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <!-- <span class="nav-logo-icon">Logo</span> -->
+            <img src="/assets/ico_files/Untitled design - Copy.ico" alt="SupportPulse Logo" class="nav-logo-icon">
+            <span class="">SupportPulse</span>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">JD</div>
+            <span class="userName" id="userName"></span>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <!-- Sidebar Menu -->
+        <aside class="sidebar">
+            <div class="menu-item active" data-page="dashboard">
+                <span class="menu-icon">📊</span>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item" data-page="my-tickets">
+                <span class="menu-icon">📋</span>
+                <span>My Tickets</span>
+            </div>
+            <div class="menu-item" data-page="search-tickets">
+                <span class="menu-icon">🔍</span>
+                <span>Search Tickets</span>
+            </div>
+            <div class="menu-item" data-page="create-ticket">
+                <span class="menu-icon">➕</span>
+                <span>Create Ticket</span>
+            </div>
+            <div class="menu-item" data-page="create-user">
+                <span class="menu-icon">🙍🏻‍♂️</span>
+                <span>Create User</span>
+            </div>
+        </aside>
+        
+        <!-- Page Content -->
+        <main class="content">
+            <!-- Dashboard Page -->
+            <section class="page active" id="dashboard">
+                <h1>Dashboard</h1>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-title">Total Tickets</div>
+                        <div class="card-value" id="total-tickets"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Open Tickets</div>
+                        <div class="card-value" id="open-tickets"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Closed Tickets</div>
+                        <div class="card-value" id="closed-tickets"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- My Tickets Page -->
+            <section class="page" id="my-tickets">
+                <h1>My Tickets</h1>
+                <div class="ticket-list">
+                    <div class="ticket-header">
+                        <!-- <h3>Recent Tickets</h3> -->
+                    </div>
+                    <div class="myTicketsbody" id="myTicketsbody"></div>
+                </div>
+            </section>
+            
+            <!-- Search Tickets Page -->
+             <section class="page" id="search-tickets">
+                <h1>Search Tickets</h1>
+                <div class="search-ticket-container">
+                    <input type="text" class="search-ticket-input">
+                </div>
+
+                <div class="search-ticket-list">
+
+                </div>
+                <div class="searchTicketbody" id="searchTicketbody"></div>
+             </section>
+            
+            <!-- Create Ticket Page -->
+            <section class="page" id="create-ticket">
+                <h1>Create New Ticket</h1>
+                <form class="ticket-form">
+                    <div class="form-group">
+                        <label class="form-label">Subject</label>
+                        <input type="text" class="form-input" id="form-input-subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Customer Email</label>
+                        <input type="email" class="form-input" id="form-input-customer-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Reporter </label>
+                        <input type="text" class="form-input" id="form-input-reportor" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Priority</label>
+                        <select class="form-input" id="form-input-priority" required>
+                            <option selected>Low</option>
+                            <option>Medium</option>
+                            <option>High</option>
+                            <option>Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ticket Type</label>
+                        <select class="form-input" id="form-input-ticket-type" required>
+                            <option selected>Bug/Error</option>
+                            <option>Feature Request</option>
+                            <option>General Question</option>
+                            <option>Incident</option>
+                            <option>Account Request</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-input form-textarea" id="form-input-description" required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit" id="form-submit">Create Ticket</button>
+                </form>
+            </section>
+
+        <!--Crate a user page-->
+            <section class="page" id="create-user">
+                <h1>Create New User</h1>
+                <form class="ticket-form">
+                    <div class="form-group">
+                        <label class="form-label">Display Name</label>
+                        <input type="text" class="form-input" id="form-input-displayName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">User Email</label>
+                        <input type="email" class="form-input" id="form-input-user-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">User Password</label>
+                        <input type="text" class="form-input" id="form-input-user-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">User Type</label>
+                        <select class="form-input" id="form-input-user-type" required>
+                            <option selected>Customer</option>
+                            <option>Agent</option>
+                            <option>Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="form-submit" id="form-submit-user">Create User</button>
+                </form>
+            </section>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="admin_user_frontend.js"></script>
+
+</body>
+</html>

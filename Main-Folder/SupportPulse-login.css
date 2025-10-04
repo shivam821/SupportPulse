@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,900;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  /* background-color: #072ac8; */
+  background-color: #3772ff;
+  color: #ffff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container{
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.login-header{
+  /* background-color: #072ac8; */
+  background-color: #3772ff;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+
+.span-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 5rem;
+}
+
+.logo{
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.user-type-selector{
+  display: flex;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.user-type {
+  flex: 1;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.user-type:hover {
+  background: #f3f4f6;
+}
+
+.user-type:active {
+  /* color: #072ac8; */
+  color: #3772ff;
+}
+
+.user-type-name {
+  color: #0e1c36;
+}
+
+.user-type-icon {
+  font-size: 1.5rem;
+}
+
+.login-form {
+  padding: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  color: #0e1c36;
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.1rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  outline: none;
+  /* border-color: #072ac8; */
+  border-color: #3772ff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.forgot-password {
+  display: block;
+  text-align: right;
+  text-decoration: none;
+  /* color: #072ac8; */
+  color: #3772ff;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.75rem;
+  /* background: #072ac8; */
+  background: #3772ff;
+  color: #ffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+.login-button:hover {
+  background: #072ac8;
+}
+
+@media (max-widht : 400px) {
+  .login-container {
+    margin: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+  .user-type {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
+} 
