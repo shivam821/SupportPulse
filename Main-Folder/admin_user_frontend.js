@@ -1,3 +1,5 @@
+
+
 // Ensure Supabase library is loaded before this script
 const SUPABASE_URL = 'https://gumnirlcexdbfjhznivz.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1bW5pcmxjZXhkYmZqaHpuaXZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMjYzNzAsImV4cCI6MjA3MDkwMjM3MH0.9v8koO0SCHOpPVrSCiLbq0QMsEbrkMKaiJ60w6Z-oz0';
@@ -26,6 +28,13 @@ menuItems.forEach(item => {
     });
 });
 
+function generateRandom5DigitNumber() {
+  const min = 10000; // Smallest 5-digit number
+  const max = 99999; // Largest 5-digit number
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const formTicketnumber = generateRandom5DigitNumber();
 const formInputsubject = document.getElementById('form-input-subject');
 const formInputcustomeremail = document.getElementById('form-input-customer-email');
 const formInputreportor = document.getElementById('form-input-reportor');
@@ -39,6 +48,7 @@ ticketSubmission.addEventListener('click', async (event) => {
     
     // Use the supabase client you initialized above, not window.supabase directly
     const { data, error } = await supabase.from('tickets').insert([{
+        ticket_number : formTicketnumber,
         subject: formInputsubject.value,
         customer_email: formInputcustomeremail.value,
         reporter : formInputreportor.value,
@@ -66,7 +76,7 @@ ticketSubmission.addEventListener('click', async (event) => {
 
 //My Tickets
 async function fetchMytickets() {
-    const { data, error } = await supabase.from("tickets").select("*");
+    const { data, error } = await supabase.from("tickets").select("*").eq('reporter',sessionStorageusername);
     if (error) {
         console.log('Error in fetching jobs.');
         return; // Added return to prevent using undefined 'data' when error occurs
@@ -84,6 +94,7 @@ function populateMytickets(tickets) {
         ticketElement.className = 'ticket-item';
         ticketElement.innerHTML = `
             <div class="ticket-info">
+                <div class="ticket-number">#${ticket.ticket_number || 'No Ticket Number'}</div>
                 <div class="ticket-subject">${ticket.subject || 'No subject'}</div>
                 <div class="ticket-description"> 
                     ${ticket.ticket_description || 'No description'}
@@ -136,13 +147,14 @@ function populateSearchtickets(tickets) {
         const ticketElement = document.createElement('div');
         ticketElement.className = 'search-ticket-item';
         ticketElement.innerHTML = `
-            <div class="search-ticket-info">
+            <div class="ticket-info">
+                <div class="ticket-number">#${ticket.ticket_number || 'No Ticket Number'}</div>
                 <div class="ticket-subject">${ticket.subject || 'No subject'}</div>
                 <div class="ticket-description"> 
                     ${ticket.ticket_description || 'No description'}
                 </div>
             </div>
-            <div class="search-ticket-status status-${ticket.ticket_status || 'open'}">
+            <div class="ticket-status status-${ticket.ticket_status || 'open'}">
                 ${ticket.ticket_status ? capitalizeFirstLetter(ticket.ticket_status) : 'Open'}
             </div>
         `;
@@ -259,4 +271,9 @@ formSubmituser.addEventListener('click',async(e)=>{
     formInputuseremail.value = '';
     formInputuserpassword.value = '';
 
+});
+
+document.getElementById("userDropdownBtn").addEventListener("click", function() {
+  const dropdown = this.parentElement;
+  dropdown.classList.toggle("show");
 });

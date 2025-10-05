@@ -7,6 +7,8 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const menuItems = document.querySelectorAll('.menu-item');
 const pages = document.querySelectorAll('.page');
+const sessionStorageusername = sessionStorage.getItem('Username');
+document.getElementById('userName').textContent = sessionStorageusername;
 
 // Handle menu item clicks
 menuItems.forEach(item => {
@@ -64,7 +66,7 @@ ticketSubmission.addEventListener('click', async (event) => {
 
 //My Tickets
 async function fetchMytickets() {
-    const { data, error } = await supabase.from("tickets").select("*");
+    const { data, error } = await supabase.from("tickets").select("*").eq('reporter',sessionStorageusername);
     if (error) {
         console.log('Error in fetching jobs.');
         return; // Added return to prevent using undefined 'data' when error occurs
@@ -82,6 +84,7 @@ function populateMytickets(tickets) {
         ticketElement.className = 'ticket-item';
         ticketElement.innerHTML = `
             <div class="ticket-info">
+                <div class="ticket-number">#${ticket.ticket_number || 'No Ticket Number'}</div>
                 <div class="ticket-subject">${ticket.subject || 'No subject'}</div>
                 <div class="ticket-description"> 
                     ${ticket.ticket_description || 'No description'}
@@ -134,13 +137,14 @@ function populateSearchtickets(tickets) {
         const ticketElement = document.createElement('div');
         ticketElement.className = 'search-ticket-item';
         ticketElement.innerHTML = `
-            <div class="search-ticket-info">
+            <div class="ticket-info">
+                <div class="ticket-number">#${ticket.ticket_number || 'No Ticket Number'}</div>
                 <div class="ticket-subject">${ticket.subject || 'No subject'}</div>
                 <div class="ticket-description"> 
                     ${ticket.ticket_description || 'No description'}
                 </div>
             </div>
-            <div class="search-ticket-status status-${ticket.ticket_status || 'open'}">
+            <div class="ticket-status status-${ticket.ticket_status || 'open'}">
                 ${ticket.ticket_status ? capitalizeFirstLetter(ticket.ticket_status) : 'Open'}
             </div>
         `;
@@ -233,3 +237,8 @@ async function getTotalcloseticketcount() {
         return count;
     }
 }
+
+document.getElementById("userDropdownBtn").addEventListener("click", function() {
+  const dropdown = this.parentElement;
+  dropdown.classList.toggle("show");
+});

@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SupportPulse | Admin Dashboard</title>
     <link rel="stylesheet" href="admin_user_frontend.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <!--Nav Bar Code-->
@@ -17,10 +17,21 @@
             <img src="/assets/ico_files/Untitled design - Copy.ico" alt="SupportPulse Logo" class="nav-logo-icon">
             <span class="">SupportPulse</span>
         </div>
-        <div class="user-profile">
-            <div class="user-avatar">JD</div>
-            <span class="userName" id="userName"></span>
+
+      <!-- User Profile Section -->
+      <div class="user-profile">
+        <div class="navbar-dropdown">
+          <button class="drop-button" id="userDropdownBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="user-name" id="userName"></span>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content" id="dropdownMenu">
+            <a href="#">Profile</a>
+            <a href="#">Settings</a>
+            <a href="/Main-Folder/SupportPulse-login.html">Logout</a>
+          </div>
         </div>
+      </div>
     </nav>
 
     <!-- Main Content Area -->

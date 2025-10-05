@@ -36,12 +36,18 @@ loginButton.addEventListener('click',async(e)=>{
         sessionStorage.setItem('Username',formInputemail_trim);
     }
     else if (data.user_type == 'Agent') {
-        window.alert('Successful Login as Agent');
+        const formInputemail_trim = formInputemail.value.split('@')[0];
+        window.alert(`Successful Login as ${formInputemail_trim}`);
         window.location.href = 'agent_user_frontend.html';
+        console.log(formInputemail_trim);
+        sessionStorage.setItem('Username',formInputemail_trim);
     }
     else if (data.user_type == 'Customer'){
-        window.alert('Successful Login as Customer');
+        const formInputemail_trim = formInputemail.value.split('@')[0];
+        window.alert(`Successful Login as ${formInputemail_trim}`);
         window.location.href = 'customer_user_frontend.html';
+        console.log(formInputemail_trim);
+        sessionStorage.setItem('Username',formInputemail_trim);
     }
 
         else {

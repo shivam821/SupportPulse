@@ -14,10 +14,20 @@
             <img src="/assets/ico_files/Untitled design - Copy.ico" alt="SupportPulse Logo" class="nav-logo-icon">
             <span class="">SupportPulse</span>
         </div>
-        <div class="user-profile">
-            <div class="user-avatar">JD</div>
-            <span>John Doe</span>
+      <!-- User Profile Section -->
+      <div class="user-profile">
+        <div class="navbar-dropdown">
+          <button class="drop-button" id="userDropdownBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="user-name" id="userName"></span>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content" id="dropdownMenu">
+            <a href="#">Profile</a>
+            <a href="#">Settings</a>
+            <a href="/Main-Folder/SupportPulse-login.html">Logout</a>
+          </div>
         </div>
+      </div>
     </nav>
 
     <!-- Main Content Area -->
@@ -45,7 +55,7 @@
         <!-- Page Content -->
         <main class="content">
             <!-- Dashboard Page -->
-            <section class="page active" id="dashboard">
+            <!-- <section class="page active" id="dashboard">
                 <h1>Dashboard</h1>
                 <div class="dashboard-cards">
                     <div class="card">
@@ -61,10 +71,10 @@
                         <div class="card-value" id="closed-tickets"></div>
                     </div>
                 </div>
-            </section>
+            </section> -->
             
             <!-- My Tickets Page -->
-            <section class="page" id="my-tickets">
+            <section class="page active" id="my-tickets">
                 <h1>My Tickets</h1>
                 <div class="ticket-list">
                     <div class="ticket-header">
