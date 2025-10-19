@@ -34,6 +34,7 @@ loginButton.addEventListener('click',async(e)=>{
         window.location.href = 'admin_user_frontend.html';
         console.log(formInputemail_trim);
         sessionStorage.setItem('Username',formInputemail_trim);
+        sessionStorage.setItem('Email',formInputemail.value);
     }
     else if (data.user_type == 'Agent') {
         const formInputemail_trim = formInputemail.value.split('@')[0];
@@ -41,6 +42,7 @@ loginButton.addEventListener('click',async(e)=>{
         window.location.href = 'agent_user_frontend.html';
         console.log(formInputemail_trim);
         sessionStorage.setItem('Username',formInputemail_trim);
+        sessionStorage.setItem('Email',formInputemail.value);
     }
     else if (data.user_type == 'Customer'){
         const formInputemail_trim = formInputemail.value.split('@')[0];
@@ -48,6 +50,7 @@ loginButton.addEventListener('click',async(e)=>{
         window.location.href = 'customer_user_frontend.html';
         console.log(formInputemail_trim);
         sessionStorage.setItem('Username',formInputemail_trim);
+        sessionStorage.setItem('Email',formInputemail.value);
     }
 
         else {
@@ -62,3 +65,4 @@ loginButton.addEventListener('click',async(e)=>{
 const formInputemail_trim = formInputemail.value.split('@')[0];
 console.log(formInputemail_trim);
 sessionStorage.setItem('Username',formInputemail_trim);
+

@@ -1,5 +1,4 @@
 
-
 // Ensure Supabase library is loaded before this script
 const SUPABASE_URL = 'https://gumnirlcexdbfjhznivz.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1bW5pcmxjZXhkYmZqaHpuaXZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMjYzNzAsImV4cCI6MjA3MDkwMjM3MH0.9v8koO0SCHOpPVrSCiLbq0QMsEbrkMKaiJ60w6Z-oz0';
@@ -7,33 +6,36 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // Initialize Supabase
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Menu Navigation
 const menuItems = document.querySelectorAll('.menu-item');
 const pages = document.querySelectorAll('.page');
 const sessionStorageusername = sessionStorage.getItem('Username');
-document.getElementById('userName').textContent = sessionStorageusername;
+const userNameEl = document.getElementById('userName');
+if (userNameEl && sessionStorageusername) {
+  userNameEl.textContent = sessionStorageusername;
+}
 
-// Handle menu item clicks
+userEmailid = sessionStorage.getItem('Email');
+
 menuItems.forEach(item => {
-    item.addEventListener('click', function() {
-        // Remove active class from all menu items and pages
-        menuItems.forEach(i => i.classList.remove('active'));
-        pages.forEach(page => page.classList.remove('active'));
-        
-        // Add active class to clicked menu item
-        this.classList.add('active');
-        
-        // Show corresponding page
-        const pageId = this.getAttribute('data-page');
-        document.getElementById(pageId).classList.add('active');
-    });
+  item.addEventListener('click', function() {
+    menuItems.forEach(i => i.classList.remove('active'));
+    pages.forEach(page => page.classList.remove('active'));
+    this.classList.add('active');
+    const pageId = this.getAttribute('data-page');
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) targetPage.classList.add('active');
+  });
 });
 
+// Generate random ticket number
 function generateRandom5DigitNumber() {
-  const min = 10000; // Smallest 5-digit number
-  const max = 99999; // Largest 5-digit number
+  const min = 10000;
+  const max = 99999;
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// Form Elements
 const formTicketnumber = generateRandom5DigitNumber();
 const formInputsubject = document.getElementById('form-input-subject');
 const formInputcustomeremail = document.getElementById('form-input-customer-email');
@@ -41,239 +43,253 @@ const formInputreportor = document.getElementById('form-input-reportor');
 const formInputpriority = document.getElementById('form-input-priority');
 const formInputtickettype = document.getElementById('form-input-ticket-type');
 const formInputdescription = document.getElementById('form-input-description');
-const formInputticketstatus = 'Open';
 const ticketSubmission = document.getElementById('form-submit');
-ticketSubmission.addEventListener('click', async (event) => {
+const formInputticketstatus = 'Open';
+formInputreportor.value = sessionStorage.getItem('Email');
+
+// Ticket Submission
+if (ticketSubmission) {
+  ticketSubmission.addEventListener('click', async (event) => {
     event.preventDefault();
-    
-    // Use the supabase client you initialized above, not window.supabase directly
+
     const { data, error } = await supabase.from('tickets').insert([{
-        ticket_number : formTicketnumber,
-        subject: formInputsubject.value,
-        customer_email: formInputcustomeremail.value,
-        reporter : formInputreportor.value,
-        ticket_priority: formInputpriority.value,
-        ticket_type: formInputtickettype.value,
-        ticket_description: formInputdescription.value,
-        ticket_status : formInputticketstatus
-    }]);
+      ticket_number: formTicketnumber,
+      subject: formInputsubject.value,
+      customer_email: formInputcustomeremail.value,
+      reporter: formInputreportor.value,
+      ticket_priority: formInputpriority.value,
+      ticket_type: formInputtickettype.value,
+      ticket_description: formInputdescription.value,
+      ticket_status: formInputticketstatus
+    }]).select();
 
     if (error) {
-        console.error(error);
-        window.alert('Error in submitting!');
-    } else {
-        window.alert('Ticket Created!');
+      console.error(error);
+      window.alert('Error in submitting!');
+      return;
     }
-    
-    // Clear form fields
-    formInputsubject.value = "";
-    formInputcustomeremail.value = "";
-    formInputreportor.value = "";
-    formInputpriority.value = "";
-    formInputtickettype.value = "";
-    formInputdescription.value = "";
-});
 
-//My Tickets
+    window.alert('Ticket Created!');
+
+    if (formInputtickettype.value === 'Bug/Error') {
+      const selectedUser = await randomUsers();
+      if (selectedUser) {
+        await supabase.from('tickets')
+          .update({ assigned_to: selectedUser.display_name })
+          .eq('ticket_number', data[0].ticket_number);
+      }
+    }
+
+    // Clear form
+    formInputsubject.value = '';
+    formInputcustomeremail.value = '';
+    formInputreportor.value = '';
+    formInputpriority.value = '';
+    formInputtickettype.value = '';
+    formInputdescription.value = '';
+  });
+}
+
+// Fetch My Tickets
 async function fetchMytickets() {
-    const { data, error } = await supabase.from("tickets").select("*").eq('reporter',sessionStorageusername);
-    if (error) {
-        console.log('Error in fetching jobs.');
-        return; // Added return to prevent using undefined 'data' when error occurs
-    }
-    populateMytickets(data);
+  const { data, error } = await supabase.from("tickets").select("*").eq('reporter', sessionStorageusername);
+  if (error) {
+    console.log('Error in fetching my tickets.', error);
+    return;
+  }
+  populateMytickets(data);
 }
 
 function populateMytickets(tickets) {
-    const myTicketsbody = document.getElementById('myTicketsbody');
-    myTicketsbody.innerHTML = '';
+  const myTicketsbody = document.getElementById('myTicketsbody');
+  if (!myTicketsbody) return;
+  myTicketsbody.innerHTML = '';
 
-    tickets.forEach((ticket) => {
-        // Create the HTML element for each ticket
-        const ticketElement = document.createElement('div');
-        ticketElement.className = 'ticket-item';
-        ticketElement.innerHTML = `
-            <div class="ticket-info">
-                <div class="ticket-number">#${ticket.ticket_number || 'No Ticket Number'}</div>
-                <div class="ticket-subject">${ticket.subject || 'No subject'}</div>
-                <div class="ticket-description"> 
-                    ${ticket.ticket_description || 'No description'}
-                </div>
-            </div>
-            <div class="ticket-status status-${ticket.ticket_status || 'open'}">
-                ${ticket.ticket_status ? capitalizeFirstLetter(ticket.ticket_status) : 'Open'}
-            </div>
-        `;
-        
-        // Append the ticket to the container
-        myTicketsbody.appendChild(ticketElement);
-    });
+  tickets.forEach(ticket => {
+    const ticketElement = document.createElement('div');
+    ticketElement.className = 'ticket-item';
+    ticketElement.innerHTML = `
+      <div class="ticket-info">
+          <div class="ticket-number">#${ticket.ticket_number || 'No Ticket Number'}</div>
+          <div class="ticket-subject">${ticket.subject || 'No subject'}</div>
+          <div class="ticket-description">${ticket.ticket_description || 'No description'}</div>
+      </div>
+      <div class="ticket-status status-${ticket.ticket_status || 'open'}">
+          ${ticket.ticket_status ? capitalizeFirstLetter(ticket.ticket_status) : 'Open'}
+      </div>`;
+    myTicketsbody.appendChild(ticketElement);
+  });
 }
 
 function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 fetchMytickets();
 
+// Global ticket array for search
+let allTickets = [];
 
-
-
-
-let allTickets = []; // store tickets globally
-
-// Fetch Tickets
 async function fetchSearchtickets() {
-    const { data, error } = await supabase.from("tickets").select("*");
-    if (error) {
-        console.log('Error in fetching tickets.');
-        return;
-    }
-    allTickets = data; // save all tickets
-    populateSearchtickets(allTickets);
+  const { data, error } = await supabase.from("tickets").select("*");
+  if (error) {
+    console.log('Error in fetching tickets.', error);
+    return;
+  }
+  allTickets = data;
+  populateSearchtickets(allTickets);
 }
 
-// Populate Tickets
 function populateSearchtickets(tickets) {
-    const searchTicketbody = document.getElementById('searchTicketbody');
-    searchTicketbody.innerHTML = '';
+  const searchTicketbody = document.getElementById('searchTicketbody');
+  if (!searchTicketbody) return;
+  searchTicketbody.innerHTML = '';
 
-    if (tickets.length === 0) {
-        searchTicketbody.innerHTML = '<p>No tickets found.</p>';
-        return;
-    }
+  if (!tickets || tickets.length === 0) {
+    searchTicketbody.innerHTML = '<p>No tickets found.</p>';
+    return;
+  }
 
-    tickets.forEach((ticket) => {
-        const ticketElement = document.createElement('div');
-        ticketElement.className = 'search-ticket-item';
-        ticketElement.innerHTML = `
-            <div class="ticket-info">
-                <div class="ticket-number">#${ticket.ticket_number || 'No Ticket Number'}</div>
-                <div class="ticket-subject">${ticket.subject || 'No subject'}</div>
-                <div class="ticket-description"> 
-                    ${ticket.ticket_description || 'No description'}
-                </div>
-            </div>
-            <div class="ticket-status status-${ticket.ticket_status || 'open'}">
-                ${ticket.ticket_status ? capitalizeFirstLetter(ticket.ticket_status) : 'Open'}
-            </div>
-        `;
-        searchTicketbody.appendChild(ticketElement);
-    });
+  tickets.forEach(ticket => {
+    const ticketElement = document.createElement('div');
+    ticketElement.className = 'search-ticket-item';
+    ticketElement.innerHTML = `
+      <div class="ticket-info">
+          <div class="ticket-number">#${ticket.ticket_number || 'No Ticket Number'}</div>
+          <div class="ticket-subject">${ticket.subject || 'No subject'}</div>
+          <div class="ticket-description">${ticket.ticket_description || 'No description'}</div>
+      </div>
+      <div class="ticket-status status-${ticket.ticket_status || 'open'}">
+          ${ticket.ticket_status ? capitalizeFirstLetter(ticket.ticket_status) : 'Open'}
+      </div>`;
+    searchTicketbody.appendChild(ticketElement);
+  });
 }
 
-// Capitalize helper
-function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-// Search Filter
-document.querySelector('.search-ticket-input').addEventListener('input', (e) => {
+const searchInput = document.querySelector('.search-ticket-input');
+if (searchInput) {
+  searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
-
-    const filteredTickets = allTickets.filter(ticket => {
-        return (
-            (ticket.subject && ticket.subject.toLowerCase().includes(searchTerm)) ||
-            (ticket.ticket_description && ticket.ticket_description.toLowerCase().includes(searchTerm)) ||
-            (ticket.ticket_status && ticket.ticket_status.toLowerCase().includes(searchTerm))
-        );
-    });
-
+    const filteredTickets = allTickets.filter(ticket =>
+      (ticket.subject && ticket.subject.toLowerCase().includes(searchTerm)) ||
+      (ticket.ticket_description && ticket.ticket_description.toLowerCase().includes(searchTerm)) ||
+      (ticket.ticket_status && ticket.ticket_status.toLowerCase().includes(searchTerm))
+    );
     populateSearchtickets(filteredTickets);
-});
+  });
+}
 
 fetchSearchtickets();
 
-//Total Tickets
-getTotalticketcount().then(count => {
-    if (count !== null) {
-        document.getElementById('total-tickets').textContent = count;
-    }
-});
-
-
+// Total ticket count
 async function getTotalticketcount() {
-    const { count, error } = await supabase
-        .from('tickets')
-        .select('*', { count: 'exact', head: true });
-
-    if (error) {
-        console.error('Error in count:', error);
-        return null;
-    } else {
-        // console.log('Total tickets:', count);
-        return count;
-    }
+  const { count, error } = await supabase.from('tickets').select('*', { count: 'exact', head: true });
+  if (error) {
+    console.error('Error in count:', error);
+    return null;
+  }
+  return count;
 }
 
-//Open Tickets
-getTotalopenticketcount().then(count => {
-    if (count !== null) {
-        document.getElementById('open-tickets').textContent = count;
-    }
+getTotalticketcount().then(count => {
+  const el = document.getElementById('total-tickets');
+  if (el && count !== null) el.textContent = count;
 });
 
-
+// Open ticket count
 async function getTotalopenticketcount() {
-    const { count, error } = await supabase
-        .from('tickets')
-        .select('*', { count: 'exact', head: true }).eq('ticket_status', 'Open');
-
-    if (error) {
-        console.error('Error in count:', error);
-        return null;
-    } else {
-        return count;
-    }
+  const { count, error } = await supabase.from('tickets')
+    .select('*', { count: 'exact', head: true })
+    .eq('ticket_status', 'Open');
+  if (error) {
+    console.error('Error in count:', error);
+    return null;
+  }
+  return count;
 }
 
-//Closed Tickets
-getTotalcloseticketcount().then(count => {
-    if (count !== null) {
-        document.getElementById('closed-tickets').textContent = count;
-    }
+getTotalopenticketcount().then(count => {
+  const el = document.getElementById('open-tickets');
+  if (el && count !== null) el.textContent = count;
 });
 
-
+// Closed ticket count
 async function getTotalcloseticketcount() {
-    const { count, error } = await supabase
-        .from('tickets')
-        .select('*', { count: 'exact', head: true }).eq('ticket_status', 'Closed');
-
-    if (error) {
-        console.error('Error in count:', error);
-        return null;
-    } else {
-        return count;
-    }
+  const { count, error } = await supabase.from('tickets')
+    .select('*', { count: 'exact', head: true })
+    .eq('ticket_status', 'Closed');
+  if (error) {
+    console.error('Error in count:', error);
+    return null;
+  }
+  return count;
 }
 
-// User Creation 
+getTotalcloseticketcount().then(count => {
+  const el = document.getElementById('closed-tickets');
+  if (el && count !== null) el.textContent = count;
+});
 
-const formInputdisplayName = document.getElementById('form-input-displayName'); 
+// User creation
+const formInputdisplayName = document.getElementById('form-input-displayName');
 const formInputuseremail = document.getElementById('form-input-user-email');
 const formInputuserpassword = document.getElementById('form-input-user-password');
 const formInputusertype = document.getElementById('form-input-user-type');
 const formSubmituser = document.getElementById('form-submit-user');
 
-formSubmituser.addEventListener('click',async(e)=>{
+if (formSubmituser) {
+  formSubmituser.addEventListener('click', async (e) => {
     e.preventDefault();
-    const {data,error} = await supabase
-    .from('users')
-    .insert({
-        'display_name' : formInputdisplayName.value,
-        'email' : formInputuseremail.value,
-        'passwords' : formInputuserpassword.value,
-        'user_type' : formInputusertype.value
-    })
+    const { error } = await supabase.from('users').insert([{
+      display_name: formInputdisplayName.value,
+      email: formInputuseremail.value,
+      passwords: formInputuserpassword.value,
+      user_type: formInputusertype.value
+    }]);
+    if (error) {
+      console.error(error);
+      window.alert('Error creating user!');
+      return;
+    }
     window.alert('User Created!');
     formInputdisplayName.value = '';
     formInputuseremail.value = '';
     formInputuserpassword.value = '';
+    formInputusertype.value = '';
+  });
+}
 
-});
+// Dropdown toggle
+const userDropdownBtn = document.getElementById("userDropdownBtn");
+if (userDropdownBtn) {
+  userDropdownBtn.addEventListener("click", function() {
+    const dropdown = this.parentElement;
+    if (dropdown) dropdown.classList.toggle("show");
+  });
+}
 
-document.getElementById("userDropdownBtn").addEventListener("click", function() {
-  const dropdown = this.parentElement;
-  dropdown.classList.toggle("show");
-});
+// Random user assignment
+async function randomUsers() {
+  const { data: users, error } = await supabase
+    .from('agent_user_tickets')
+    .select('display_name, ticket_count')
+    .eq('ticket_type', 'Bug/Error')
+    .order('ticket_count', { ascending: true });
+
+  if (error || !users || users.length === 0) {
+    console.error('Error fetching random users:', error);
+    return null;
+  }
+
+  const lowestCount = users[0].ticket_count;
+  const lowestUsers = users.filter(user => user.ticket_count === lowestCount);
+  const selectedUser = lowestUsers[Math.floor(Math.random() * lowestUsers.length)];
+
+  await supabase
+    .from('agent_user_tickets')
+    .update({ ticket_count: selectedUser.ticket_count + 1 })
+    .eq('display_name', selectedUser.display_name)
+    .eq('ticket_type', 'Bug/Error');
+
+  return selectedUser;
+}

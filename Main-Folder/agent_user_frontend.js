@@ -34,6 +34,7 @@ const formInputtickettype = document.getElementById('form-input-ticket-type');
 const formInputdescription = document.getElementById('form-input-description');
 const formInputticketstatus = 'Open';
 const ticketSubmission = document.getElementById('form-submit');
+formInputreportor.value = sessionStorage.getItem('Email');
 ticketSubmission.addEventListener('click', async (event) => {
     event.preventDefault();
     
