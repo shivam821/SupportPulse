@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SupportPulse | Customer Support Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="customer_user_frontend.css">
 </head>
 <body>
     <!--Nav Bar Code-->
@@ -14,28 +14,38 @@
             <img src="/assets/ico_files/Untitled design - Copy.ico" alt="SupportPulse Logo" class="nav-logo-icon">
             <span class="">SupportPulse</span>
         </div>
-        <div class="user-profile">
-            <div class="user-avatar">JD</div>
-            <span>John Doe</span>
+      <!-- User Profile Section -->
+      <div class="user-profile">
+        <div class="navbar-dropdown">
+          <button class="drop-button" id="userDropdownBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="user-name" id="userName"></span>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content" id="dropdownMenu">
+            <a href="#">Profile</a>
+            <a href="#">Settings</a>
+            <a href="index.html">Logout</a>
+          </div>
         </div>
+      </div>
     </nav>
 
     <!-- Main Content Area -->
     <div class="main-container">
         <!-- Sidebar Menu -->
         <aside class="sidebar">
-            <div class="menu-item active" data-page="dashboard">
+            <!-- <div class="menu-item active" data-page="dashboard">
                 <span class="menu-icon">📊</span>
                 <span>Dashboard</span>
-            </div>
+            </div> -->
             <div class="menu-item" data-page="my-tickets">
                 <span class="menu-icon">📋</span>
                 <span>My Tickets</span>
             </div>
-            <div class="menu-item" data-page="search-tickets">
+            <!-- <div class="menu-item" data-page="search-tickets">
                 <span class="menu-icon">🔍</span>
                 <span>Search Tickets</span>
-            </div>
+            </div> -->
             <div class="menu-item" data-page="create-ticket">
                 <span class="menu-icon">➕</span>
                 <span>Create Ticket</span>
@@ -45,7 +55,7 @@
         <!-- Page Content -->
         <main class="content">
             <!-- Dashboard Page -->
-            <section class="page active" id="dashboard">
+            <!-- <section class="page active" id="dashboard">
                 <h1>Dashboard</h1>
                 <div class="dashboard-cards">
                     <div class="card">
@@ -61,10 +71,10 @@
                         <div class="card-value" id="closed-tickets"></div>
                     </div>
                 </div>
-            </section>
+            </section> -->
             
             <!-- My Tickets Page -->
-            <section class="page" id="my-tickets">
+            <section class="page active" id="my-tickets">
                 <h1>My Tickets</h1>
                 <div class="ticket-list">
                     <div class="ticket-header">
@@ -133,7 +143,7 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="/Frontend/main.js"></script>
+    <script src="customer_user_frontend.js"></script>
 
 </body>
 </html>

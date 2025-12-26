@@ -3,7 +3,7 @@ const SUPABASE_URL = 'https://gumnirlcexdbfjhznivz.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1bW5pcmxjZXhkYmZqaHpuaXZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMjYzNzAsImV4cCI6MjA3MDkwMjM3MH0.9v8koO0SCHOpPVrSCiLbq0QMsEbrkMKaiJ60w6Z-oz0';
 
 // Initialize Supabase
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const menuItems = document.querySelectorAll('.menu-item');
 const pages = document.querySelectorAll('.page');
@@ -39,7 +39,7 @@ ticketSubmission.addEventListener('click', async (event) => {
     event.preventDefault();
     
     // Use the supabase client you initialized above, not window.supabase directly
-    const { data, error } = await supabase.from('tickets').insert([{
+    const { data, error } = await supabaseClient.from('tickets').insert([{
         subject: formInputsubject.value,
         customer_email: formInputcustomeremail.value,
         reporter : formInputreportor.value,
@@ -67,7 +67,7 @@ ticketSubmission.addEventListener('click', async (event) => {
 
 //My Tickets
 async function fetchMytickets() {
-    const { data, error } = await supabase.from("tickets").select("*").eq('reporter',sessionStorageusername);
+    const { data, error } = await supabaseClient.from("tickets").select("*").eq('reporter',sessionStorageusername);
     if (error) {
         console.log('Error in fetching jobs.');
         return; // Added return to prevent using undefined 'data' when error occurs
@@ -115,7 +115,7 @@ let allTickets = []; // store tickets globally
 
 // Fetch Tickets
 async function fetchSearchtickets() {
-    const { data, error } = await supabase.from("tickets").select("*");
+    const { data, error } = await supabaseClient.from("tickets").select("*");
     if (error) {
         console.log('Error in fetching tickets.');
         return;
@@ -175,16 +175,87 @@ document.querySelector('.search-ticket-input').addEventListener('input', (e) => 
 
 fetchSearchtickets();
 
-//Total Tickets
-getTotalticketcount().then(count => {
-    if (count !== null) {
-        document.getElementById('total-tickets').textContent = count;
-    }
-});
+// //Total Tickets
+// getTotalticketcount().then(count => {
+//     if (count !== null) {
+//         document.getElementById('total-tickets').textContent = count;
+//     }
+// });
 
 
-async function getTotalticketcount() {
-    const { count, error } = await supabase
+// async function getTotalticketcount() {
+//     const { count, error } = await supabaseClient
+//         .from('tickets')
+//         .select('*', { count: 'exact', head: true });
+
+//     if (error) {
+//         console.error('Error in count:', error);
+//         return null;
+//     } else {
+//         // console.log('Total tickets:', count);
+//         return count;
+//     }
+// }
+
+// //Open Tickets
+// getTotalopenticketcount().then(count => {
+//     if (count !== null) {
+//         document.getElementById('open-tickets').textContent = count;
+//     }
+// });
+
+
+// async function getTotalopenticketcount() {
+//     const { count, error } = await supabaseClient
+//         .from('tickets')
+//         .select('*', { count: 'exact', head: true }).eq('ticket_status', 'Open');
+
+//     if (error) {
+//         console.error('Error in count:', error);
+//         return null;
+//     } else {
+//         return count;
+//     }
+// }
+
+// //Closed Tickets
+// getTotalcloseticketcount().then(count => {
+//     if (count !== null) {
+//         document.getElementById('closed-tickets').textContent = count;
+//     }
+// });
+
+
+// async function getTotalcloseticketcount() {
+//     const { count, error } = await supabaseClient
+//         .from('tickets')
+//         .select('*', { count: 'exact', head: true }).eq('ticket_status', 'Closed');
+
+//     if (error) {
+//         console.error('Error in count:', error);
+//         return null;
+//     } else {
+//         return count;
+//     }
+// }
+
+// document.getElementById("userDropdownBtn").addEventListener("click", function() {
+//   const dropdown = this.parentElement;
+//   dropdown.classList.toggle("show");
+// });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Total Tickets
+    getTotalticketcount().then(count => {
+        const el = document.getElementById('total-tickets');
+        if (el && count !== null) {
+            el.textContent = count;
+        }
+    });
+    async function getTotalticketcount() {
+    const { count, error } = await supabaseClient
         .from('tickets')
         .select('*', { count: 'exact', head: true });
 
@@ -197,16 +268,15 @@ async function getTotalticketcount() {
     }
 }
 
-//Open Tickets
-getTotalopenticketcount().then(count => {
-    if (count !== null) {
-        document.getElementById('open-tickets').textContent = count;
-    }
-});
-
-
-async function getTotalopenticketcount() {
-    const { count, error } = await supabase
+    // Open Tickets
+    getTotalopenticketcount().then(count => {
+        const el = document.getElementById('open-tickets');
+        if (el && count !== null) {
+            el.textContent = count;
+        }
+    });
+    async function getTotalopenticketcount() {
+    const { count, error } = await supabaseClient
         .from('tickets')
         .select('*', { count: 'exact', head: true }).eq('ticket_status', 'Open');
 
@@ -218,16 +288,15 @@ async function getTotalopenticketcount() {
     }
 }
 
-//Closed Tickets
-getTotalcloseticketcount().then(count => {
-    if (count !== null) {
-        document.getElementById('closed-tickets').textContent = count;
-    }
-});
-
-
-async function getTotalcloseticketcount() {
-    const { count, error } = await supabase
+    // Closed Tickets
+    getTotalcloseticketcount().then(count => {
+        const el = document.getElementById('closed-tickets');
+        if (el && count !== null) {
+            el.textContent = count;
+        }
+    });
+    async function getTotalcloseticketcount() {
+    const { count, error } = await supabaseClient
         .from('tickets')
         .select('*', { count: 'exact', head: true }).eq('ticket_status', 'Closed');
 
@@ -239,7 +308,12 @@ async function getTotalcloseticketcount() {
     }
 }
 
-document.getElementById("userDropdownBtn").addEventListener("click", function() {
-  const dropdown = this.parentElement;
-  dropdown.classList.toggle("show");
+    // Dropdown
+    const dropdownBtn = document.getElementById("userDropdownBtn");
+    if (dropdownBtn) {
+        dropdownBtn.addEventListener("click", function () {
+            this.parentElement.classList.toggle("show");
+        });
+    }
+
 });

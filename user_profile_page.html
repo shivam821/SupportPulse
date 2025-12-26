@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SupportPulse | User Profile</title>
+    <link rel="stylesheet" href="user_profile_page.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!--Nav Bar Code-->
+    <nav class="nav-bar">
+        <div class="nav-logo">
+            <!-- <span class="nav-logo-icon">Logo</span> -->
+            <img src="/assets/ico_files/Untitled design - Copy.ico" alt="SupportPulse Logo" class="nav-logo-icon">
+            <span class="">SupportPulse</span>
+        </div>
+
+      <!-- User Profile Section -->
+      <div class="user-profile">
+        <div class="navbar-dropdown">
+          <button class="drop-button" id="userDropdownBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="user-name" id="userName"></span>
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content" id="dropdownMenu">
+            <a href="admin_user_frontend.html">Home</a>
+            <a href="#">Settings</a>
+            <a href="/Main-Folder/SupportPulse-login.html">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+           <!-- Page Content -->
+        <main class="content">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <h1>User Profile</h1>
+                    <p>Manage your account settings and preferences</p>
+                </div>
+                
+                <div class="profile-body">
+                    <!-- Success/Error Messages -->
+                    <div class="alert alert-success" id="successAlert">
+                        Profile updated successfully!
+                    </div>
+                    <div class="alert alert-error" id="errorAlert">
+                        There was an error updating your profile. Please try again.
+                    </div>
+                    
+                    <!-- Profile Picture Section -->
+                    <div class="profile-section">
+                        <h2>Profile Picture</h2>
+                        <div class="profile-picture-container">
+                            <div id="profilePictureDisplay" class="profile-picture-placeholder">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="upload-controls">
+                                <input type="file" id="profilePictureInput" class="file-input" accept="image/*">
+                                <label for="profilePictureInput" class="file-input-label">
+                                    <i class="fa fa-upload"></i> Upload New Photo
+                                </label>
+                                <button class="btn btn-secondary" id="removePictureBtn">
+                                    <i class="fa fa-trash"></i> Remove Photo
+                                </button>
+                                <p class="current-info">Recommended: Square image, at least 200x200 pixels</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Personal Information Section -->
+                    <div class="profile-section">
+                        <h2>Personal Information</h2>
+                        <div class="form-group">
+                            <label for="displayName" class="form-label">Display Name</label>
+                            <input type="text" class="form-input" id="displayName" placeholder="Enter your display name" required>
+                            <p class="current-info">Current: <span id="currentDisplayName">John Doe</span></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <!-- <input type="email" class="form-input" id="email" placeholder="Enter your email address" readonly> -->
+                            <input type="email" class="form-input" id="email" placeholder="Enter your email address" required>
+                            <p class="current-info">Email cannot be changed</p>
+                        </div>
+                        <button class="btn btn-primary" id="savePersonalInfoBtn">
+                            <i class="fa fa-save"></i> Save Personal Information
+                        </button>
+                    </div>
+                    
+                    <!-- Change Password Section -->
+                    <div class="profile-section">
+                        <h2>Change Password</h2>
+                        <div class="form-group">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-input" id="currentPassword" placeholder="Enter your current password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-input" id="newPassword" placeholder="Enter your new password" required>
+                            <div class="password-requirements">
+                                Password must be at least 8 characters long and include uppercase, lowercase, and numbers.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your new password" required>
+                        </div>
+                        <button class="btn btn-primary" id="changePasswordBtn">
+                            <i class="fa fa-key"></i> Change Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="user_profile_page.js"></script>
+
+</body>
+</html>
+
+

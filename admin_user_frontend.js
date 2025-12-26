@@ -4,7 +4,7 @@ const SUPABASE_URL = 'https://gumnirlcexdbfjhznivz.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1bW5pcmxjZXhkYmZqaHpuaXZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUzMjYzNzAsImV4cCI6MjA3MDkwMjM3MH0.9v8koO0SCHOpPVrSCiLbq0QMsEbrkMKaiJ60w6Z-oz0';
 
 // Initialize Supabase
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Menu Navigation
 const menuItems = document.querySelectorAll('.menu-item');
@@ -52,7 +52,7 @@ if (ticketSubmission) {
   ticketSubmission.addEventListener('click', async (event) => {
     event.preventDefault();
 
-    const { data, error } = await supabase.from('tickets').insert([{
+    const { data, error } = await supabaseClient.from('tickets').insert([{
       ticket_number: formTicketnumber,
       subject: formInputsubject.value,
       customer_email: formInputcustomeremail.value,
@@ -74,7 +74,7 @@ if (ticketSubmission) {
     if (formInputtickettype.value === 'Bug/Error') {
       const selectedUser = await randomUsers();
       if (selectedUser) {
-        await supabase.from('tickets')
+        await supabaseClient.from('tickets')
           .update({ assigned_to: selectedUser.display_name })
           .eq('ticket_number', data[0].ticket_number);
       }
@@ -92,7 +92,7 @@ if (ticketSubmission) {
 
 // Fetch My Tickets
 async function fetchMytickets() {
-  const { data, error } = await supabase.from("tickets").select("*").eq('reporter', sessionStorageusername);
+  const { data, error } = await supabaseClient.from("tickets").select("*").eq('reporter', sessionStorageusername);
   if (error) {
     console.log('Error in fetching my tickets.', error);
     return;
@@ -131,7 +131,7 @@ fetchMytickets();
 let allTickets = [];
 
 async function fetchSearchtickets() {
-  const { data, error } = await supabase.from("tickets").select("*");
+  const { data, error } = await supabaseClient.from("tickets").select("*");
   if (error) {
     console.log('Error in fetching tickets.', error);
     return;
@@ -183,7 +183,7 @@ fetchSearchtickets();
 
 // Total ticket count
 async function getTotalticketcount() {
-  const { count, error } = await supabase.from('tickets').select('*', { count: 'exact', head: true });
+  const { count, error } = await supabaseClient.from('tickets').select('*', { count: 'exact', head: true });
   if (error) {
     console.error('Error in count:', error);
     return null;
@@ -198,7 +198,7 @@ getTotalticketcount().then(count => {
 
 // Open ticket count
 async function getTotalopenticketcount() {
-  const { count, error } = await supabase.from('tickets')
+  const { count, error } = await supabaseClient.from('tickets')
     .select('*', { count: 'exact', head: true })
     .eq('ticket_status', 'Open');
   if (error) {
@@ -215,7 +215,7 @@ getTotalopenticketcount().then(count => {
 
 // Closed ticket count
 async function getTotalcloseticketcount() {
-  const { count, error } = await supabase.from('tickets')
+  const { count, error } = await supabaseClient.from('tickets')
     .select('*', { count: 'exact', head: true })
     .eq('ticket_status', 'Closed');
   if (error) {
@@ -240,7 +240,7 @@ const formSubmituser = document.getElementById('form-submit-user');
 if (formSubmituser) {
   formSubmituser.addEventListener('click', async (e) => {
     e.preventDefault();
-    const { error } = await supabase.from('users').insert([{
+    const { error } = await supabaseClient.from('users').insert([{
       display_name: formInputdisplayName.value,
       email: formInputuseremail.value,
       passwords: formInputuserpassword.value,
@@ -270,7 +270,7 @@ if (userDropdownBtn) {
 
 // Random user assignment
 async function randomUsers() {
-  const { data: users, error } = await supabase
+  const { data: users, error } = await supabaseClient
     .from('agent_user_tickets')
     .select('display_name, ticket_count')
     .eq('ticket_type', 'Bug/Error')
@@ -285,7 +285,7 @@ async function randomUsers() {
   const lowestUsers = users.filter(user => user.ticket_count === lowestCount);
   const selectedUser = lowestUsers[Math.floor(Math.random() * lowestUsers.length)];
 
-  await supabase
+  await supabaseClient
     .from('agent_user_tickets')
     .update({ ticket_count: selectedUser.ticket_count + 1 })
     .eq('display_name', selectedUser.display_name)
